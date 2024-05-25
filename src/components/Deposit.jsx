@@ -1,3 +1,5 @@
+/* eslint-disable no-empty */
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import axiosInstance from "../api/axios";
 
@@ -7,8 +9,6 @@ function Deposit() {
     amount: "",
   });
   const [submitting, setSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,14 +21,10 @@ function Deposit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setSuccessMessage("");
-    setErrorMessage("");
 
     try {
       const response = await axiosInstance.post("/deposit", formData);
-      setSuccessMessage(response.data.message);
     } catch (error) {
-      setErrorMessage(error.response ? error.response.data.err : "An error occurred");
     } finally {
       setSubmitting(false);
     }
@@ -40,7 +36,10 @@ function Deposit() {
         <h2 className="text-lg font-semibold mb-4">Deposit Money</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="accountNumber"
+              className="block text-sm font-medium text-gray-700"
+            >
               Account Number
             </label>
             <input
@@ -54,7 +53,10 @@ function Deposit() {
             />
           </div>
           <div>
-            <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="amount"
+              className="block text-sm font-medium text-gray-700"
+            >
               Amount
             </label>
             <input
@@ -70,15 +72,15 @@ function Deposit() {
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${submitting ? 'cursor-not-allowed' : ''}`}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                submitting ? "cursor-not-allowed" : ""
+              }`}
               disabled={submitting}
             >
               {submitting ? "Submitting..." : "Submit"}
             </button>
           </div>
         </form>
-        {successMessage && <p className="mt-4 text-green-500">{successMessage}</p>}
-        {errorMessage && <p className="mt-4 text-red-500">{errorMessage}</p>}
       </div>
     </div>
   );
